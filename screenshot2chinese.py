@@ -8,15 +8,13 @@ import os
 from tempfile import TemporaryDirectory
 import pytesseract
 import pyperclip
+from ocr import ocr
 
 r =platform.architecture()
 print(r)
 shot = 0
 
-def transIm(file):
-    result = pytesseract.image_to_string(Image.open(file), lang = 'chi_sim+eng')
-    print(result)
-    pyperclip.copy(result.strip())
+my_ocr = ocr(2)
 
 def ScreenShot():
     print("input win+ctrl after screenshot")
@@ -35,8 +33,9 @@ def getScreenShot():
             print('dirname is:',dirname)
             jpg = dirname+'\\temp.jpg'
             im.save(jpg)
-            transIm(jpg)
-            #im.show()
+            result = my_ocr.transIm(jpg)
+            print(result)
+            pyperclip.copy(result.strip())
 
 keyboard.add_hotkey('win+shift+s', ScreenShot)
 keyboard.add_hotkey('win+ctrl', getScreenShot)
